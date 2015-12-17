@@ -1,0 +1,14 @@
+PROJECT_NAME           = "Data Structures"
+PROJECT_BRIEF          = "data structures implemented in C/C++"
+OUTPUT_DIRECTORY       = .
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+QUIET                  = YES
+INPUT                  = src/
+RECURSIVE              = YES
+SOURCE_BROWSER         = YES
+GENERATE_LATEX         = NO
+#HAVE_DOT               = YES
+#CALL_GRAPH             = YES
+#CALLER_GRAPH           = YES
