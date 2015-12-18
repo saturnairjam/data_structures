@@ -25,13 +25,15 @@ public:
     void delete_head();
     void delete_tail();
 
+    void remove(int value);
+
     struct dllist_node *p_head; ///< pointer to head node
 
 private:
 
     struct dllist_node * node_create(int value);
-
-    void node_delete(struct dllist_node *p_node);
+    void                 node_delete(struct dllist_node *p_node);
+    struct dllist_node * node_find(int value);
 
     struct dllist_node *p_tail; ///< pointer to tail node
 

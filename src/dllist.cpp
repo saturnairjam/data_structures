@@ -136,13 +136,6 @@ void dllist::delete_head()
  */
 void dllist::delete_tail()
 {
-    if (num_nodes == 2)
-    {
-        volatile int tmp = 1;
-
-        (void) tmp;
-    }
-
     if (num_nodes)
     {
         struct dllist_node *p_tmp;
@@ -164,6 +157,56 @@ void dllist::delete_tail()
         {
             p_head = NULL;
         }
+    }
+}
+
+/**
+ * @brief Remove node with associated value from list.
+ *
+ * @param[in] value: Value.
+ */
+void dllist::remove(int value)
+{
+    struct dllist_node *p_node;
+
+    p_node = node_find(value);
+
+    if (p_node != NULL)
+    {
+        struct dllist_node *p_prev = NULL;
+        struct dllist_node *p_next;
+
+        p_next = p_head;
+
+        while (p_next != p_node)
+        {
+            p_prev = p_next;
+            p_next = p_next->p_next;
+        }
+
+        if (p_prev != NULL)
+        {
+            p_prev->p_next = p_node->p_next;
+        }
+
+        if (p_node->p_next != NULL)
+        {
+            p_node->p_next->p_prev = p_prev;
+        }
+
+        if (p_node == p_head)
+        {
+            p_head = p_node->p_next;
+        }
+
+        if (p_node == p_tail)
+        {
+            p_tail = p_prev;
+        }
+
+        node_delete(p_node);
+
+        num_nodes--;
     }
 }
 
@@ -195,4 +238,41 @@ struct dllist_node * dllist::node_create(int value)
 void dllist::node_delete(struct dllist_node *p_node)
 {
     delete p_node;
+}
+
+/**
+ * @brief Find first node with associated value.
+ *
+ * @param[in] value: Value.
+ *
+ * @retval Pointer to node structure.
+ */
+struct dllist_node * dllist::node_find(int value)
+{
+    struct dllist_node *p_node;
+
+    bool found = false;
+
+    p_node = p_head;
+
+    while ((p_node != NULL) && (found == false))
+    {
+        if (p_node->value == value)
+        {
+            found = true;
+        }
+        else
+        {
+            p_node = p_node->p_next;
+        }
+    }
+
+    if (found)
+    {
+        return p_node;
+    }
+    else
+    {
+        return NULL;
+    }
 }

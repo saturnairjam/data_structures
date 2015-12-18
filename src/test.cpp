@@ -185,6 +185,8 @@ void test_dllist(int num_iterations)
 
     int rand_value;
 
+    int num_nodes = 0;
+
     p_dllist = new dllist;
 
     srand(time(NULL));
@@ -197,34 +199,58 @@ void test_dllist(int num_iterations)
 
             if (rand() % 2)
             {
-                printf("add_head(%3d): ", rand_value);
+                printf("add_head(%3d): ", rand_value); fflush(stdout);
 
                 p_dllist->add_head(rand_value);
             }
             else
             {
-                printf("add_tail(%3d): ", rand_value);
+                printf("add_tail(%3d): ", rand_value); fflush(stdout);
 
                 p_dllist->add_tail(rand_value);
             }
 
+            num_nodes++;
+
             print_dllist(p_dllist->p_head);
         }
 
-        if (rand() % 2)
+        if (num_nodes && (rand() % 2))
+        {
+            struct dllist_node *p_node = p_dllist->p_head;
+
+            int rand_index = rand() % num_nodes;
+
+            while (rand_index--)
+            {
+                p_node = p_node->p_next;
+            }
+
+            printf("  remove(%3d): ", p_node->value); fflush(stdout);
+
+            p_dllist->remove(p_node->value);
+
+            num_nodes--;
+
+            print_dllist(p_dllist->p_head);
+        }
+
+        if (num_nodes && (rand() % 2))
         {
             if (rand() % 2)
             {
-                printf("delete_head(): ");
+                printf("delete_head(): "); fflush(stdout);
 
                 p_dllist->delete_head();
             }
             else
             {
-                printf("delete_tail(): ");
+                printf("delete_tail(): "); fflush(stdout);
 
                 p_dllist->delete_tail();
             }
+
+            num_nodes--;
 
             print_dllist(p_dllist->p_head);
         }
