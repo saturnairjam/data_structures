@@ -40,6 +40,11 @@ void dllist::add_head(int value)
     p_node->p_next = p_head;
     p_node->p_prev = NULL;
 
+    if (p_head != NULL)
+    {
+        p_head->p_prev = p_node;
+    }
+
     p_head = p_node;
 
     if (num_nodes == 0)
@@ -92,7 +97,10 @@ void dllist::delete_head()
 
         p_head = p_head->p_next;
 
-        p_head->p_prev = NULL;
+        if (p_head != NULL)
+        {
+            p_head->p_prev = NULL;
+        }
 
         node_delete(p_tmp);
 
@@ -110,6 +118,13 @@ void dllist::delete_head()
  */
 void dllist::delete_tail()
 {
+    if (num_nodes == 2)
+    {
+        volatile int tmp = 1;
+
+        (void) tmp;
+    }
+
     if (num_nodes)
     {
         struct dllist_node *p_tmp;
@@ -118,7 +133,10 @@ void dllist::delete_tail()
 
         p_tail = p_tail->p_prev;
 
-        p_tail->p_next = NULL;
+        if (p_tail != NULL)
+        {
+            p_tail->p_next = NULL;
+        }
 
         node_delete(p_tmp);
 

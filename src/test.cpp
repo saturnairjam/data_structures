@@ -165,7 +165,7 @@ void test_dllist(int num_iterations)
 
     while (num_iterations--)
     {
-        if (1) //rand() % 2)
+        if (rand() % 2)
         {
             rand_value = rand() % (RAND_VALUE_MAX + 1);
 
@@ -187,7 +187,7 @@ void test_dllist(int num_iterations)
 
         if (rand() % 2)
         {
-            if (1) //rand() % 2)
+            if (rand() % 2)
             {
                 printf("delete_head(): ");
 
@@ -229,16 +229,23 @@ void print_llist(struct llist_node *p_node)
  */
 void print_dllist(struct dllist_node *p_node)
 {
-    printf("NULL <-- ");
-
-    while (p_node != NULL)
+    if (p_node == NULL)
     {
-        printf("%4d <-> ", p_node->value);
-
-        p_node = p_node->p_next;
+        printf("NULL\n");
     }
+    else
+    {
+        printf("NULL <-- ");
 
-    printf("\b\b\b\b\b --> NULL\n");
+        while (p_node != NULL)
+        {
+            printf("%4d <-> ", p_node->value);
+
+            p_node = p_node->p_next;
+        }
+
+        printf("\b\b\b\b\b --> NULL\n");
+    }
 }
 
 /**
