@@ -24,6 +24,24 @@ dllist::dllist()
  */
 dllist::~dllist()
 {
+    struct dllist_node *p_prev;
+    struct dllist_node *p_next;
+
+    p_next = p_head;
+
+    while (p_next != NULL)
+    {
+        p_prev = p_next;
+
+        p_next = p_next->p_next;
+
+        node_delete(p_prev);
+
+        num_nodes--;
+    }
+
+    p_head = NULL;
+    p_tail = NULL;
 }
 
 /**
