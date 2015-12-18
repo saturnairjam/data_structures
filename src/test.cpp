@@ -100,6 +100,8 @@ void test_llist(int num_iterations)
 
     int rand_value;
 
+    int num_nodes = 0;
+
     p_llist = new llist;
 
     srand(time(NULL));
@@ -123,10 +125,32 @@ void test_llist(int num_iterations)
                 p_llist->add_tail(rand_value);
             }
 
+            num_nodes++;
+
             print_llist(p_llist->p_head);
         }
 
-        if (rand() % 2)
+        if (num_nodes && (rand() % 2))
+        {
+            struct llist_node *p_node = p_llist->p_head;
+
+            int rand_index = rand() % num_nodes;
+
+            while (rand_index--)
+            {
+                p_node = p_node->p_next;
+            }
+
+            printf("  remove(%3d): ", p_node->value);
+
+            p_llist->remove(p_node->value);
+
+            num_nodes--;
+
+            print_llist(p_llist->p_head);
+        }
+
+        if (num_nodes && rand() % 2)
         {
             if (rand() % 2)
             {
@@ -140,6 +164,8 @@ void test_llist(int num_iterations)
 
                 p_llist->delete_tail();
             }
+
+            num_nodes--;
 
             print_llist(p_llist->p_head);
         }

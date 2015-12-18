@@ -24,13 +24,15 @@ public:
     void delete_head();
     void delete_tail();
 
+    void remove(int value);
+
     struct llist_node *p_head; ///< pointer to head node
 
 private:
 
     struct llist_node * node_create(int value);
-
-    void node_delete(struct llist_node *p_node);
+    void                node_delete(struct llist_node *p_node);
+    struct llist_node * node_find(int value);
 
     struct llist_node *p_tail; ///< pointer to tail node
 

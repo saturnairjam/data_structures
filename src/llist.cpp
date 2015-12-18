@@ -153,6 +153,50 @@ void llist::delete_tail()
 }
 
 /**
+ * @brief Remove node with associated value from list.
+ *
+ * @param[in] value: Value.
+ */
+void llist::remove(int value)
+{
+    struct llist_node *p_node;
+
+    p_node = node_find(value);
+
+    if (p_node != NULL)
+    {
+        struct llist_node *p_prev = NULL;
+        struct llist_node *p_next;
+
+        p_next = p_head;
+
+        while (p_next != p_node)
+        {
+            p_prev = p_next;
+            p_next = p_next->p_next;
+        }
+
+        if (p_prev != NULL)
+        {
+            p_prev->p_next = p_node->p_next;
+        }
+        else
+        {
+            p_head = p_node->p_next;
+        }
+
+        if (p_node == p_tail)
+        {
+            p_tail = p_prev;
+        }
+
+        node_delete(p_node);
+
+        num_nodes--;
+    }
+}
+
+/**
  * @brief Create node with associated value.
  *
  * @param[in] value: Value.
@@ -180,4 +224,41 @@ struct llist_node * llist::node_create(int value)
 void llist::node_delete(struct llist_node *p_node)
 {
     delete p_node;
+}
+
+/**
+ * @brief Find first node with associated value.
+ *
+ * @param[in] value: Value.
+ *
+ * @retval Pointer to node structure.
+ */
+struct llist_node * llist::node_find(int value)
+{
+    struct llist_node *p_node;
+
+    bool found = false;
+
+    p_node = p_head;
+
+    while ((p_node != NULL) && (found == false))
+    {
+        if (p_node->value == value)
+        {
+            found = true;
+        }
+        else
+        {
+            p_node = p_node->p_next;
+        }
+    }
+
+    if (found)
+    {
+        return p_node;
+    }
+    else
+    {
+        return NULL;
+    }
 }
