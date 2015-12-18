@@ -4,10 +4,10 @@
  * @brief Linked list header.
  */
 
-/// node structure
-struct node {
-    int          value;  ///< node value
-    struct node *p_next; ///< pointer to next node
+/// linked list node structure
+struct llist_node {
+    int                value;  ///< node value
+    struct llist_node *p_next; ///< pointer to next node
 };
 
 /// linked list class
@@ -24,15 +24,15 @@ public:
     void delete_head();
     void delete_tail();
 
-    struct node *p_head; ///< pointer to head node
+    struct llist_node *p_head; ///< pointer to head node
 
 private:
 
-    struct node * node_create(int value);
+    struct llist_node * node_create(int value);
 
-    void node_delete(struct node *p_node);
+    void node_delete(struct llist_node *p_node);
 
-    struct node *p_tail; ///< pointer to tail node
+    struct llist_node *p_tail; ///< pointer to tail node
 
-    int num_nodes; ///< number of nodes
+    int num_nodes; ///< number of nodes in list
 };

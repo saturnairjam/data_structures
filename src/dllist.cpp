@@ -1,17 +1,17 @@
 /**
- * @file  llist.cpp
+ * @file  dllist.cpp
  *
- * @brief Linked list source.
+ * @brief Doubly-linked list source.
  */
 
 #include <stdlib.h>
 
-#include "llist.h"
+#include "dllist.h"
 
 /**
  * @brief Constructor.
  */
-llist::llist()
+dllist::dllist()
 {
     p_head = NULL;
     p_tail = NULL;
@@ -22,26 +22,8 @@ llist::llist()
 /**
  * @brief Destructor.
  */
-llist::~llist()
+dllist::~dllist()
 {
-    struct llist_node *p_prev;
-    struct llist_node *p_next;
-
-    p_next = p_head;
-
-    while (p_next != NULL)
-    {
-        p_prev = p_next;
-
-        p_next = p_next->p_next;
-
-        node_delete(p_prev);
-
-        num_nodes--;
-    }
-
-    p_head = NULL;
-    p_tail = NULL;
 }
 
 /**
@@ -49,13 +31,14 @@ llist::~llist()
  *
  * @param[in] value: Value.
  */
-void llist::add_head(int value)
+void dllist::add_head(int value)
 {
-    struct llist_node *p_node = NULL;
+    struct dllist_node *p_node = NULL;
 
     p_node = node_create(value);
 
     p_node->p_next = p_head;
+    p_node->p_prev = NULL;
 
     p_head = p_node;
 
@@ -72,22 +55,26 @@ void llist::add_head(int value)
  *
  * @param[in] value: Value.
  */
-void llist::add_tail(int value)
+void dllist::add_tail(int value)
 {
-    struct llist_node *p_node = NULL;
+    struct dllist_node *p_node = NULL;
 
     p_node = node_create(value);
+
+    if (num_nodes)
+    {
+        p_tail->p_next = p_node;
+    }
+
+    p_node->p_next = NULL;
+    p_node->p_prev = p_tail;
+
+    p_tail = p_node;
 
     if (num_nodes == 0)
     {
         p_head = p_node;
     }
-    else
-    {
-        p_tail->p_next = p_node;
-    }
-
-    p_tail = p_node;
 
     num_nodes++;
 }
@@ -95,15 +82,17 @@ void llist::add_tail(int value)
 /**
  * @brief Delete node at head of list.
  */
-void llist::delete_head()
+void dllist::delete_head()
 {
     if (num_nodes)
     {
-        struct llist_node *p_tmp;
+        struct dllist_node *p_tmp;
 
         p_tmp = p_head;
 
         p_head = p_head->p_next;
+
+        p_head->p_prev = NULL;
 
         node_delete(p_tmp);
 
@@ -119,55 +108,45 @@ void llist::delete_head()
 /**
  * @brief Delete node at tail of list.
  */
-void llist::delete_tail()
+void dllist::delete_tail()
 {
-    struct llist_node *p_prev = NULL;
-    struct llist_node *p_next;
-
-    p_next = p_head;
-
-    while (p_next != p_tail)
+    if (num_nodes)
     {
-        p_prev = p_next;
-        p_next = p_next->p_next;
-    }
+        struct dllist_node *p_tmp;
 
-    p_tail = p_prev;
+        p_tmp = p_tail;
 
-    if (p_tail != NULL)
-    {
+        p_tail = p_tail->p_prev;
+
         p_tail->p_next = NULL;
-    }
 
-    if (p_next != NULL)
-    {
-        node_delete(p_next);
+        node_delete(p_tmp);
 
         num_nodes--;
-    }
 
-    if (num_nodes == 0)
-    {
-        p_head = NULL;
+        if (num_nodes == 0)
+        {
+            p_head = NULL;
+        }
     }
 }
 
 /**
  * @brief Create node with associated value.
  *
- * @param[in] value: Value.
+ * @param[in,out] value: Value.
  *
  * @retval Pointer to new node structure.
  */
-struct llist_node * llist::node_create(int value)
+struct dllist_node * dllist::node_create(int value)
 {
-    struct llist_node *p_node = NULL;
+    struct dllist_node *p_node = NULL;
 
-    p_node = new llist_node;
+    p_node = new dllist_node;
 
-    p_node->value = value;
-
+    p_node->value  = value;
     p_node->p_next = NULL;
+    p_node->p_prev = NULL;
 
     return p_node;
 }
@@ -177,7 +156,7 @@ struct llist_node * llist::node_create(int value)
  *
  * @param[in,out] p_node: Pointer to node structure.
  */
-void llist::node_delete(struct llist_node *p_node)
+void dllist::node_delete(struct dllist_node *p_node)
 {
     delete p_node;
 }
