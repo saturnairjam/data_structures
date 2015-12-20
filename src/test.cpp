@@ -12,6 +12,7 @@
 
 #include "llist.h"
 #include "dllist.h"
+#include "stack.h"
 
 #define RAND_VALUE_MAX 100 ///< maximum random value
 
@@ -19,9 +20,11 @@ bool strings_are_equal(char *string1, const char *string2);
 
 void test_llist(int num_iterations);
 void test_dllist(int num_iterations);
+void test_stack(int num_iterations);
 
 void print_llist(struct llist_node *p_head);
 void print_dllist(struct dllist_node *p_node);
+void print_stack(struct llist_node *p_head);
 
 char *get_basename(char *path);
 
@@ -40,7 +43,8 @@ int main(int argc, char **argv)
     {
         printf("!!! error: not enough command-line arguments\n");
 
-        printf("Usage: %s [num iterations] [ll|dll]\n", get_basename(argv[0]));
+        printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
+               get_basename(argv[0]));
 
         retval = EXIT_FAILURE;
     }
@@ -55,7 +59,7 @@ int main(int argc, char **argv)
                 printf("!!! error: invalid number of iterations '%s'\n",
                        argv[1]);
 
-                printf("Usage: %s [num iterations] [ll|dll]\n",
+                printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
                        get_basename(argv[0]));
 
                 retval = EXIT_FAILURE;
@@ -66,19 +70,23 @@ int main(int argc, char **argv)
         {
             int num_iterations = atoi(argv[1]);
 
-            if (strings_are_equal(argv[2], "ll"))
+            if (strings_are_equal(argv[2], "llist"))
             {
                 test_llist(num_iterations);
             }
-            else if (strings_are_equal(argv[2], "dll"))
+            else if (strings_are_equal(argv[2], "dllist"))
             {
                 test_dllist(num_iterations);
+            }
+            else if (strings_are_equal(argv[2], "stack"))
+            {
+                test_stack(num_iterations);
             }
             else
             {
                 printf("!!! error: invalid selection '%s'\n", argv[2]);
 
-                printf("Usage: %s [num iterations] [ll|dll]\n",
+                printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
                        get_basename(argv[0]));
 
                 retval = EXIT_FAILURE;
@@ -199,13 +207,13 @@ void test_dllist(int num_iterations)
 
             if (rand() % 2)
             {
-                printf("add_head(%3d): ", rand_value); fflush(stdout);
+                printf("add_head(%3d): ", rand_value);
 
                 p_dllist->add_head(rand_value);
             }
             else
             {
-                printf("add_tail(%3d): ", rand_value); fflush(stdout);
+                printf("add_tail(%3d): ", rand_value);
 
                 p_dllist->add_tail(rand_value);
             }
@@ -226,7 +234,7 @@ void test_dllist(int num_iterations)
                 p_node = p_node->p_next;
             }
 
-            printf("  remove(%3d): ", p_node->value); fflush(stdout);
+            printf("  remove(%3d): ", p_node->value);
 
             p_dllist->remove(p_node->value);
 
@@ -239,13 +247,13 @@ void test_dllist(int num_iterations)
         {
             if (rand() % 2)
             {
-                printf("delete_head(): "); fflush(stdout);
+                printf("delete_head(): ");
 
                 p_dllist->delete_head();
             }
             else
             {
-                printf("delete_tail(): "); fflush(stdout);
+                printf("delete_tail(): ");
 
                 p_dllist->delete_tail();
             }
@@ -255,6 +263,58 @@ void test_dllist(int num_iterations)
             print_dllist(p_dllist->p_head);
         }
     }
+}
+
+/**
+ * @brief Test stack.
+ *
+ * @param[in] num_iterations: Number of iterations.
+ */
+void test_stack(int num_iterations)
+{
+    stack *p_stack;
+
+    int rand_value;
+
+    int num_items = 0;
+
+    p_stack = new stack;
+
+    srand(time(NULL));
+
+    while (num_iterations--)
+    {
+        if (rand() % 2)
+        {
+            rand_value = rand() % (RAND_VALUE_MAX + 1);
+
+            printf("push(): %3d: ", rand_value);
+
+            p_stack->push(rand_value);
+
+            num_items++;
+
+            print_stack(p_stack->p_llist->p_head);
+        }
+
+        if (num_items && (rand() % 2))
+        {
+            printf(" pop(): %3d: ", p_stack->pop());
+
+            num_items--;
+
+            print_stack(p_stack->p_llist->p_head);
+        }
+
+        if (num_items && (rand() % 2))
+        {
+            printf("peek(): %3d: ", p_stack->peek());
+
+            print_stack(p_stack->p_llist->p_head);
+        }
+    }
+
+    delete p_stack;
 }
 
 /**
@@ -298,6 +358,23 @@ void print_dllist(struct dllist_node *p_node)
 
         printf("\b\b\b\b\b --> NULL\n");
     }
+}
+
+/**
+ * @brief Print stack.
+ *
+ * @param[in] p_node: Pointer to node structure.
+ */
+void print_stack(struct llist_node *p_node)
+{
+    while (p_node != NULL)
+    {
+        printf("%4d ", p_node->value);
+
+        p_node = p_node->p_next;
+    }
+
+    printf("\n");
 }
 
 /**

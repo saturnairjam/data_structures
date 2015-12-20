@@ -4,6 +4,10 @@
  * @brief Doubly-linked list header.
  */
 
+#ifndef _DLLIST_H_
+
+#define _DLLIST_H_
+
 /// doubly-linked list node structure
 struct dllist_node {
     int                 value;  ///< node value
@@ -39,3 +43,5 @@ private:
 
     int num_nodes; ///< number of nodes in list
 };
+
+#endif // #ifndef _DLLIST_H_

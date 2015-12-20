@@ -4,6 +4,10 @@
  * @brief Linked list header.
  */
 
+#ifndef _LLIST_H_
+
+#define _LLIST_H_
+
 /// linked list node structure
 struct llist_node {
     int                value;  ///< node value
@@ -38,3 +42,5 @@ private:
 
     int num_nodes; ///< number of nodes in list
 };
+
+#endif // #ifndef _LLIST_H_
