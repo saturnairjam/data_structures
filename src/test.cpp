@@ -29,6 +29,15 @@ void print_stack(struct llist_node *p_head);
 char *get_basename(char *path);
 
 /**
+ * @brief Print usage string.
+ */
+void print_usage(char **argv)
+{
+    printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
+           get_basename(argv[0]));
+}
+
+/**
  * @brief Main function.
  *
  * @param[in] argc: Number of command-line arguments.
@@ -43,8 +52,7 @@ int main(int argc, char **argv)
     {
         printf("!!! error: not enough command-line arguments\n");
 
-        printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
-               get_basename(argv[0]));
+        print_usage(argv);
 
         retval = EXIT_FAILURE;
     }
@@ -59,8 +67,7 @@ int main(int argc, char **argv)
                 printf("!!! error: invalid number of iterations '%s'\n",
                        argv[1]);
 
-                printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
-                       get_basename(argv[0]));
+                print_usage(argv);
 
                 retval = EXIT_FAILURE;
             }
@@ -86,8 +93,7 @@ int main(int argc, char **argv)
             {
                 printf("!!! error: invalid selection '%s'\n", argv[2]);
 
-                printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
-                       get_basename(argv[0]));
+                print_usage(argv);
 
                 retval = EXIT_FAILURE;
             }
