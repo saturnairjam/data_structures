@@ -14,6 +14,7 @@
 #include "dllist.h"
 #include "stack.h"
 #include "queue.h"
+#include "pqueue.h"
 
 #define RAND_VALUE_MAX 100 ///< maximum random value
 
@@ -23,6 +24,7 @@ void test_llist(int num_iterations);
 void test_dllist(int num_iterations);
 void test_stack(int num_iterations);
 void test_queue(int num_iterations);
+void test_pqueue(int num_iterations);
 
 void print_llist(struct llist_node *p_head);
 void print_dllist(struct dllist_node *p_node);
@@ -34,7 +36,7 @@ char *get_basename(char *path);
  */
 void print_usage(char **argv)
 {
-    printf("Usage: %s [num iterations] [llist|dllist|stack|queue]\n",
+    printf("Usage: %s [num iterations] [llist|dllist|stack|queue|pqueue]\n",
            get_basename(argv[0]));
 }
 
@@ -93,6 +95,10 @@ int main(int argc, char **argv)
             else if (strings_are_equal(argv[2], "queue"))
             {
                 test_queue(num_iterations);
+            }
+            else if (strings_are_equal(argv[2], "pqueue"))
+            {
+                test_pqueue(num_iterations);
             }
             else
             {
@@ -395,6 +401,51 @@ void test_queue(int num_iterations)
     }
 
     delete p_queue;
+}
+
+/**
+ * @brief Test priority queue.
+ *
+ * @param[in] num_iterations: Number of iterations.
+ */
+void test_pqueue(int num_iterations)
+{
+    pqueue *p_pqueue;
+
+    int rand_value;
+
+    int num_items = 0;
+
+    p_pqueue = new pqueue;
+
+    srand(time(NULL));
+
+    while (num_iterations--)
+    {
+        if (rand() % 2)
+        {
+            rand_value = rand() % (RAND_VALUE_MAX + 1);
+
+            printf("enqueue(): %3d: ", rand_value);
+
+            p_pqueue->enqueue(rand_value);
+
+            num_items++;
+
+            print_llist(p_pqueue->p_llist->p_head);
+        }
+
+        if (num_items && (rand() % 2))
+        {
+            printf("dequeue(): %3d: ", p_pqueue->dequeue());
+
+            num_items--;
+
+            print_llist(p_pqueue->p_llist->p_head);
+        }
+    }
+
+    delete p_pqueue;
 }
 
 /**
