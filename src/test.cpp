@@ -117,7 +117,7 @@ void test_llist(int num_iterations)
 {
     llist *p_llist;
 
-    int rand_value;
+    int rand_value, rand_index;
 
     int num_nodes = 0;
 
@@ -133,16 +133,40 @@ void test_llist(int num_iterations)
 
             if (rand() % 2)
             {
-                printf("add_head(%3d): ", rand_value);
+                printf("     add_head(): %3d: ", rand_value);
 
                 p_llist->add_head(rand_value);
             }
             else
             {
-                printf("add_tail(%3d): ", rand_value);
+                printf("     add_tail(): %3d: ", rand_value);
 
                 p_llist->add_tail(rand_value);
             }
+
+            num_nodes++;
+
+            print_llist(p_llist->p_head);
+        }
+
+        if (num_nodes && (rand() % 2))
+        {
+            struct llist_node *p_node;
+
+            rand_index = rand() % num_nodes;
+
+            rand_value = rand() % (RAND_VALUE_MAX + 1);
+
+            printf("add_before(%3d): %3d: ", rand_index, rand_value);
+
+            p_node = p_llist->p_head;
+
+            while (rand_index--)
+            {
+                p_node = p_node->p_next;
+            }
+
+            p_llist->add_before(p_node, rand_value);
 
             num_nodes++;
 
@@ -160,7 +184,7 @@ void test_llist(int num_iterations)
                 p_node = p_node->p_next;
             }
 
-            printf("  remove(%3d): ", p_node->value);
+            printf("       remove(): %3d: ", p_node->value);
 
             p_llist->remove(p_node->value);
 
@@ -173,13 +197,13 @@ void test_llist(int num_iterations)
         {
             if (rand() % 2)
             {
-                printf("delete_head(): ");
+                printf("  delete_head():      ");
 
                 p_llist->delete_head();
             }
             else
             {
-                printf("delete_tail(): ");
+                printf("  delete_tail():      ");
 
                 p_llist->delete_tail();
             }
@@ -218,13 +242,13 @@ void test_dllist(int num_iterations)
 
             if (rand() % 2)
             {
-                printf("add_head(%3d): ", rand_value);
+                printf("   add_head(): %3d: ", rand_value);
 
                 p_dllist->add_head(rand_value);
             }
             else
             {
-                printf("add_tail(%3d): ", rand_value);
+                printf("   add_tail(): %3d: ", rand_value);
 
                 p_dllist->add_tail(rand_value);
             }
@@ -245,7 +269,7 @@ void test_dllist(int num_iterations)
                 p_node = p_node->p_next;
             }
 
-            printf("  remove(%3d): ", p_node->value);
+            printf("     remove(): %3d: ", p_node->value);
 
             p_dllist->remove(p_node->value);
 
@@ -258,13 +282,13 @@ void test_dllist(int num_iterations)
         {
             if (rand() % 2)
             {
-                printf("delete_head(): ");
+                printf("delete_head():      ");
 
                 p_dllist->delete_head();
             }
             else
             {
-                printf("delete_tail(): ");
+                printf("delete_tail():      ");
 
                 p_dllist->delete_tail();
             }

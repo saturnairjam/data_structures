@@ -30,6 +30,8 @@ public:
 
     void remove(int value);
 
+    void add_before(struct llist_node *p_node, int value);
+
     struct llist_node *p_head; ///< pointer to head node
 
 private:

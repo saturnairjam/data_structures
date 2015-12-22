@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "llist.h"
 
@@ -194,6 +195,48 @@ void llist::remove(int value)
 
         num_nodes--;
     }
+}
+
+/**
+ * @brief Add node with associated value before specific node.
+ *
+ * @param[in] p_node: Pointer to node structure before which new node is to be
+ *                    added.
+ * @param[in] value:  Value.
+ */
+void llist::add_before(struct llist_node *p_node, int value)
+{
+    struct llist_node *p_node_new;
+
+    struct llist_node *p_prev = NULL;
+    struct llist_node *p_next;
+
+    assert(p_node != NULL);
+
+    p_node_new = node_create(value);
+
+    p_next = p_head;
+
+    while (p_next != p_node)
+    {
+        p_prev = p_next;
+        p_next = p_next->p_next;
+    }
+
+    if (p_prev == NULL)
+    {
+        p_node_new->p_next = p_head;
+
+        p_head = p_node_new;
+    }
+    else
+    {
+        p_prev->p_next = p_node_new;
+
+        p_node_new->p_next = p_node;
+    }
+
+    num_nodes++;
 }
 
 /**
