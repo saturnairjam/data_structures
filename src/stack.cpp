@@ -5,6 +5,7 @@
  */
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "stack.h"
 
@@ -43,12 +44,11 @@ int stack::pop()
 {
     int value = 0;
 
-    if (p_llist->p_head != NULL)
-    {
-        value = p_llist->p_head->value;
+    assert(p_llist->p_head != NULL);
 
-        p_llist->delete_head();
-    }
+    value = p_llist->p_head->value;
+
+    p_llist->delete_head();
 
     return value;
 }
@@ -62,10 +62,9 @@ int stack::peek()
 {
     int value = 0;
 
-    if (p_llist->p_head != NULL)
-    {
-        value = p_llist->p_head->value;
-    }
+    assert(p_llist->p_head != NULL);
+
+    value = p_llist->p_head->value;
 
     return value;
 }
