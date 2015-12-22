@@ -15,6 +15,8 @@
 stack::stack()
 {
     p_llist = new llist;
+
+    num_items = 0;
 }
 
 /**

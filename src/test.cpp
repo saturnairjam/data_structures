@@ -13,6 +13,7 @@
 #include "llist.h"
 #include "dllist.h"
 #include "stack.h"
+#include "queue.h"
 
 #define RAND_VALUE_MAX 100 ///< maximum random value
 
@@ -21,10 +22,10 @@ bool strings_are_equal(char *string1, const char *string2);
 void test_llist(int num_iterations);
 void test_dllist(int num_iterations);
 void test_stack(int num_iterations);
+void test_queue(int num_iterations);
 
 void print_llist(struct llist_node *p_head);
 void print_dllist(struct dllist_node *p_node);
-void print_stack(struct llist_node *p_head);
 
 char *get_basename(char *path);
 
@@ -33,7 +34,7 @@ char *get_basename(char *path);
  */
 void print_usage(char **argv)
 {
-    printf("Usage: %s [num iterations] [llist|dllist|stack]\n",
+    printf("Usage: %s [num iterations] [llist|dllist|stack|queue]\n",
            get_basename(argv[0]));
 }
 
@@ -88,6 +89,10 @@ int main(int argc, char **argv)
             else if (strings_are_equal(argv[2], "stack"))
             {
                 test_stack(num_iterations);
+            }
+            else if (strings_are_equal(argv[2], "queue"))
+            {
+                test_queue(num_iterations);
             }
             else
             {
@@ -300,7 +305,7 @@ void test_stack(int num_iterations)
 
             num_items++;
 
-            print_stack(p_stack->p_llist->p_head);
+            print_llist(p_stack->p_llist->p_head);
         }
 
         if (num_items && (rand() % 2))
@@ -309,18 +314,63 @@ void test_stack(int num_iterations)
 
             num_items--;
 
-            print_stack(p_stack->p_llist->p_head);
+            print_llist(p_stack->p_llist->p_head);
         }
 
         if (num_items && (rand() % 2))
         {
             printf("peek(): %3d: ", p_stack->peek());
 
-            print_stack(p_stack->p_llist->p_head);
+            print_llist(p_stack->p_llist->p_head);
         }
     }
 
     delete p_stack;
+}
+
+/**
+ * @brief Test queue.
+ *
+ * @param[in] num_iterations: Number of iterations.
+ */
+void test_queue(int num_iterations)
+{
+    queue *p_queue;
+
+    int rand_value;
+
+    int num_items = 0;
+
+    p_queue = new queue;
+
+    srand(time(NULL));
+
+    while (num_iterations--)
+    {
+        if (rand() % 2)
+        {
+            rand_value = rand() % (RAND_VALUE_MAX + 1);
+
+            printf("enqueue(): %3d: ", rand_value);
+
+            p_queue->enqueue(rand_value);
+
+            num_items++;
+
+            print_llist(p_queue->p_llist->p_head);
+        }
+
+        if (num_items && (rand() % 2))
+        {
+            printf("dequeue(): %3d: ", p_queue->dequeue());
+
+            num_items--;
+
+            print_llist(p_queue->p_llist->p_head);
+        }
+    }
+
+    delete p_queue;
 }
 
 /**
@@ -364,23 +414,6 @@ void print_dllist(struct dllist_node *p_node)
 
         printf("\b\b\b\b\b --> NULL\n");
     }
-}
-
-/**
- * @brief Print stack.
- *
- * @param[in] p_node: Pointer to node structure.
- */
-void print_stack(struct llist_node *p_node)
-{
-    while (p_node != NULL)
-    {
-        printf("%4d ", p_node->value);
-
-        p_node = p_node->p_next;
-    }
-
-    printf("\n");
 }
 
 /**
