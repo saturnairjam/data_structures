@@ -15,6 +15,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "pqueue.h"
+#include "btree.h"
 
 #define RAND_VALUE_MAX 100 ///< maximum random value
 
@@ -25,9 +26,11 @@ void test_dllist(int num_iterations);
 void test_stack(int num_iterations);
 void test_queue(int num_iterations);
 void test_pqueue(int num_iterations);
+void test_btree(int num_iterations);
 
 void print_llist(struct llist_node *p_head);
 void print_dllist(struct dllist_node *p_node);
+void print_btree(struct btree_node *p_node);
 
 char *get_basename(char *path);
 
@@ -36,7 +39,8 @@ char *get_basename(char *path);
  */
 void print_usage(char **argv)
 {
-    printf("Usage: %s [num iterations] [llist|dllist|stack|queue|pqueue]\n",
+    printf("Usage: %s [num iterations] "
+           "[llist|dllist|stack|queue|pqueue|btree]\n",
            get_basename(argv[0]));
 }
 
@@ -99,6 +103,10 @@ int main(int argc, char **argv)
             else if (strings_are_equal(argv[2], "pqueue"))
             {
                 test_pqueue(num_iterations);
+            }
+            else if (strings_are_equal(argv[2], "btree"))
+            {
+                test_btree(num_iterations);
             }
             else
             {
@@ -369,8 +377,6 @@ void test_queue(int num_iterations)
 
     int rand_value;
 
-    int num_items = 0;
-
     p_queue = new queue;
 
     srand(time(NULL));
@@ -385,16 +391,12 @@ void test_queue(int num_iterations)
 
             p_queue->enqueue(rand_value);
 
-            num_items++;
-
             print_llist(p_queue->p_llist->p_head);
         }
 
-        if (num_items && (rand() % 2))
+        if ((p_queue->is_empty() == false) && (rand() % 2))
         {
             printf("dequeue(): %3d: ", p_queue->dequeue());
-
-            num_items--;
 
             print_llist(p_queue->p_llist->p_head);
         }
@@ -414,8 +416,6 @@ void test_pqueue(int num_iterations)
 
     int rand_value;
 
-    int num_items = 0;
-
     p_pqueue = new pqueue;
 
     srand(time(NULL));
@@ -430,22 +430,49 @@ void test_pqueue(int num_iterations)
 
             p_pqueue->enqueue(rand_value);
 
-            num_items++;
-
             print_llist(p_pqueue->p_llist->p_head);
         }
 
-        if (num_items && (rand() % 2))
+        if ((p_pqueue->is_empty() == false) && (rand() % 2))
         {
             printf("dequeue(): %3d: ", p_pqueue->dequeue());
-
-            num_items--;
 
             print_llist(p_pqueue->p_llist->p_head);
         }
     }
 
     delete p_pqueue;
+}
+
+/**
+ * @brief Test binary tree.
+ *
+ * @param[in] num_iterations: Number of iterations.
+ */
+void test_btree(int num_iterations)
+{
+    btree *p_btree;
+
+    int rand_value;
+
+    p_btree = new btree;
+
+    srand(time(NULL));
+
+    while (num_iterations--)
+    {
+        rand_value = rand() % (RAND_VALUE_MAX + 1);
+
+        printf("add(): %3d: ", rand_value);
+
+        p_btree->add(rand_value);
+
+        print_btree(p_btree->p_root);
+
+        printf("\n");
+    }
+
+    delete p_btree;
 }
 
 /**
@@ -488,6 +515,22 @@ void print_dllist(struct dllist_node *p_node)
         }
 
         printf("\b\b\b\b\b --> NULL\n");
+    }
+}
+
+/**
+ * @brief Print binary tree.
+ *
+ * @param[in] p_node: Pointer to node structure.
+ */
+void print_btree(struct btree_node *p_node)
+{
+    if (p_node != NULL)
+    {
+        printf("%3d ", p_node->value);
+
+        print_btree(p_node->p_left);
+        print_btree(p_node->p_right);
     }
 }
 

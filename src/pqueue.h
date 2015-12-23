@@ -21,6 +21,8 @@ public:
     void enqueue(int value);
     int  dequeue();
 
+    bool is_empty();
+
     llist *p_llist; ///< pointer to linked list
 
 private:

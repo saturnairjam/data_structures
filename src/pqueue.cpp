@@ -77,3 +77,14 @@ int pqueue::dequeue()
 
     return value;
 }
+
+/**
+ * @brief Is queue empty?
+ *
+ * @retval  true if queue is empty
+ * @retval false if queue is not empty
+ */
+bool pqueue::is_empty()
+{
+    return (num_items == 0) ? true : false;
+}
