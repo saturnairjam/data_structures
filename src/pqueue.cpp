@@ -75,6 +75,8 @@ int pqueue::dequeue()
 
     p_llist->delete_head();
 
+    num_items--;
+
     return value;
 }
 
