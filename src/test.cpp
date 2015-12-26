@@ -471,7 +471,7 @@ void test_btree(int num_iterations)
         {
             rand_value = rand() % (RAND_VALUE_MAX + 1);
 
-            printf(" add(): %3d: ", rand_value);
+            printf("   add(%3d): ", rand_value);
 
             p_btree->add(rand_value);
 
@@ -480,28 +480,59 @@ void test_btree(int num_iterations)
             num_nodes++;
 
             print_btree(*(p_btree->p_root));
+        }
 
-            if (rand() % 2)
+        if (num_nodes && (rand() % 2))
+        {
+            llist_node<int> *p_llist_node;
+
+            btree_node<int> *p_btree_node;
+
+            rand_index = rand() % num_nodes;
+
+            p_llist_node = p_llist->p_head;
+
+            while (rand_index--)
             {
-                llist_node<int> *p_llist_node;
+                p_llist_node = p_llist_node->p_next;
+            }
 
-                btree_node<int> *p_btree_node;
+            printf("  find(%3d): ", p_llist_node->value);
 
-                rand_index = rand() % num_nodes;
+            p_btree_node = p_btree->find(p_btree->p_root,
+                                         p_llist_node->value);
 
-                p_llist_node = p_llist->p_head;
+            print_btree(*p_btree_node);
+        }
 
-                while (rand_index--)
-                {
-                    p_llist_node = p_llist_node->p_next;
-                }
+        if (num_nodes && (rand() % 2))
+        {
+            llist_node<int> *p_llist_node;
 
-                printf("find(): %3d: ", p_llist_node->value);
+            rand_index = rand() % num_nodes;
 
-                p_btree_node = p_btree->find(p_btree->p_root,
-                                             p_llist_node->value);
+            p_llist_node = p_llist->p_head;
 
-                print_btree(*p_btree_node);
+            while (rand_index--)
+            {
+                p_llist_node = p_llist_node->p_next;
+            }
+
+            printf("remove(%3d): ", p_llist_node->value);
+
+            p_btree->remove(p_llist_node->value);
+
+            p_llist->remove(p_llist_node->value);
+
+            num_nodes--;
+
+            if (num_nodes == 0)
+            {
+                printf("\n");
+            }
+            else
+            {
+                print_btree(*(p_btree->p_root));
             }
         }
     }
@@ -557,7 +588,7 @@ void print_dllist(dllist_node<int> *p_node)
 /**
  * @brief Print binary tree in breadth-first order.
  *
- * @param[in] p_node: Pointer to node structure.
+ * @param[in] node: Binary tree's root node.
  */
 void print_btree(btree_node<int> node)
 {

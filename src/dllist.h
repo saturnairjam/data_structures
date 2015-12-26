@@ -8,9 +8,6 @@
 
 #define _DLLIST_H_
 
-#include <stdlib.h>
-#include <assert.h>
-
 /// doubly-linked list node structure
 template <typename T>
 struct dllist_node {

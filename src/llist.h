@@ -8,7 +8,6 @@
 
 #define _LLIST_H_
 
-#include <stdlib.h>
 #include <assert.h>
 
 /// linked list node structure
