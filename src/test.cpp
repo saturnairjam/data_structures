@@ -475,6 +475,8 @@ void test_btree(int num_iterations)
 
             p_btree->add(rand_value);
 
+            printf("[%2d] ", p_btree->depth(p_btree->p_root));
+
             p_llist->add_tail(rand_value);
 
             num_nodes++;
@@ -502,6 +504,8 @@ void test_btree(int num_iterations)
             p_btree_node = p_btree->find(p_btree->p_root,
                                          p_llist_node->value);
 
+            printf("[%2d] ", p_btree->depth(p_btree_node));
+
             print_btree(*p_btree_node);
         }
 
@@ -521,6 +525,8 @@ void test_btree(int num_iterations)
             printf("remove(%3d): ", p_llist_node->value);
 
             p_btree->remove(p_llist_node->value);
+
+            printf("[%2d] ", p_btree->depth(p_btree->p_root));
 
             p_llist->remove(p_llist_node->value);
 

@@ -233,6 +233,28 @@ public:
         return node_removed;
     }
 
+    /**
+     * @brief Get depth of sub-tree recursively.
+     *
+     * @param[in] p_node: Pointer to sub-tree's root node.
+     *
+     * @retval Depth of sub-tree.
+     */
+    int depth(btree_node<T> *p_node)
+    {
+        if (p_node == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            int depth_left  = depth(p_node->p_left);
+            int depth_right = depth(p_node->p_right);
+
+            return ((depth_left > depth_right) ? depth_left : depth_right) + 1;
+        }
+    }
+
     btree_node<T> *p_root; ///< pointer to root node
 
 private:
