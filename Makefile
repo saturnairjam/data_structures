@@ -9,6 +9,10 @@ PATH_OUT = out
 # compiler & linker flags
 CFLAGS  = -Wall -Wextra -Werror -g
 LDFLAGS =
+ifeq ($(BUILD_OPTION),coverage)
+CFLAGS  = -Wall -Wextra -Werror --coverage
+LDFLAGS = --coverage
+endif
 
 # source files
 SOURCES = $(shell find $(PATH_SRC)/ -name '*.cpp')
