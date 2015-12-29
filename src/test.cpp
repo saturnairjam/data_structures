@@ -477,6 +477,12 @@ void test_btree(int num_iterations)
 
             printf("[%2d] ", p_btree->depth(p_btree->p_root));
 
+            if (p_btree->verify(p_btree->p_root, 0) == false)
+            {
+                printf("!!! binary tree inconsistent\n");
+                break;
+            }
+
             p_llist->add_tail(rand_value);
 
             num_nodes++;
@@ -527,6 +533,12 @@ void test_btree(int num_iterations)
             p_btree->remove(p_llist_node->value);
 
             printf("[%2d] ", p_btree->depth(p_btree->p_root));
+
+            if (p_btree->verify(p_btree->p_root, 0) == false)
+            {
+                printf("!!! binary tree inconsistent\n");
+                break;
+            }
 
             p_llist->remove(p_llist_node->value);
 

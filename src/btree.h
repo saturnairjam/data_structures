@@ -255,6 +255,42 @@ public:
         }
     }
 
+    /**
+     * @brief Verify tree by traversing it in-order and checking that no element
+     *        is greater than it's predecessor.
+     *
+     * @param[in] p_node:     Pointer to sub-tree's root node.
+     * @param[in] value_prev: Previous value.
+     *
+     * @retval  true if binary tree is correct
+     * @retval false if binary tree is incorrect
+     */
+    bool verify(btree_node<T> *p_node, T value_prev)
+    {
+        bool retval = true;
+
+        if (p_node != NULL)
+        {
+            retval = verify(p_node->p_left, value_prev);
+
+            if (retval == true)
+            {
+                if (p_node->value < value_prev)
+                {
+                    retval = false;
+                }
+                else
+                {
+                    value_prev = p_node->value;
+
+                    retval = verify(p_node->p_right, value_prev);
+                }
+            }
+        }
+
+        return retval;
+    }
+
     btree_node<T> *p_root; ///< pointer to root node
 
 private:
